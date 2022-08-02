@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Project, Comment, User } = require('../../models');
+const { Post, Comment, User } = require('../../models');
 
 // need:
 // post route
@@ -7,3 +7,9 @@ const { Project, Comment, User } = require('../../models');
 // get all
 // get by id
 // put route
+
+router.get('/', (req, res) => {
+
+})
+
+module.exports = router;
