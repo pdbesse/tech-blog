@@ -1,7 +1,7 @@
 const sequelize = require('../../config/connection.js');
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
-const { User, Post } = require('../../models');
+const { User, Post, Comment } = require('../../models');
 
 // need
 // login?
@@ -10,6 +10,55 @@ const { User, Post } = require('../../models');
 // post
 // put by id
 // delete
+
+// get all users
+router.get('/', async (req, res) => {
+    try {
+        const userData = await User.findAll({
+            include: [
+                {
+                    model: Post,
+                    model: Comment,
+                }
+            ]
+        });
+        res.status(200).json(postData);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+})
+
+// get user by id
+router.get('/:id', async (req, res) => {
+    try {
+        const userData = await User.findByPk(req.params.id, {
+            include: [
+                {
+                    model: Post, attributes: [
+                        'title',
+                        'description',
+                        'date'
+                    ]
+                },
+                {
+                    model: Comment, attributes: [
+                        'title'
+                    ]
+                },
+            ],
+        }
+        );
+        if (!userData) {
+            res.status(404).json({ message: 'No user found.' });
+            return;
+        }
+        res.json(userData);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json(err);
+    }
+
+});
 
 // create new user
 router.post('/', async (req, res) => {
@@ -71,36 +120,6 @@ router.post('/logout', (req, res) => {
     } else {
         res.status(404).end();
     }
-});
-
-// get user by id
-router.get('/:id', async (req, res) => {
-    try {
-        const userData = await User.findByPk(req.params.id//, {
-        //     include: [
-        //         { model: Post, attributes: [
-        //                 'title',
-        //                 'description',
-        //                 'date'
-        //             ]
-        //         },
-        //         { model: Comment, attributes: [
-        //                 'title'
-        //             ]
-        //         },
-        //     ],
-        // } 
-        );
-        if (!userData) {
-            res.status(404).json({message: 'No user found.'});
-            return;
-        }
-        res.json(userData);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json(err);
-    }
-    
 });
 
 

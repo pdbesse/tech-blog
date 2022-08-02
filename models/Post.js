@@ -16,7 +16,8 @@ Post.init(
           allowNull: false,
         },
         description: {
-          type: DataTypes.STRING,
+          type: DataTypes.TEXT,
+          allowNull: false,
         },
         date: {
           type: Sequelize.DATE,
