@@ -79,7 +79,7 @@ router.get('/', async (req, res) => {
       });
   
       if (!commentData) {
-        res.status(404).json({ message: 'No post found with that id!' });
+        res.status(404).json({ message: 'No comment found with that id!' });
         return;
       }
   
