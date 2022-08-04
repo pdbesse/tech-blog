@@ -21,11 +21,11 @@ Comment.init(
         text: {
             type: DataTypes.STRING,
         },
-        date: {
-            type: Sequelize.DATE,
-            allowNull: false,
-            defaultValue: Sequelize.NOW
-        },
+        // date: {
+        //     type: Sequelize.DATE,
+        //     allowNull: false,
+        //     defaultValue: Sequelize.NOW
+        // },
         post_id: {
             type: DataTypes.INTEGER,
             references: {
@@ -36,7 +36,6 @@ Comment.init(
     },
     {
         sequelize,
-        timestamps: false,
         freezeTableName: true,
         underscored: true,
         modelName: 'comment'
