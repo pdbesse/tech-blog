@@ -1,7 +1,6 @@
 const sequelize = require('../../config/connection.js');
 const router = require('express').Router();
-const bcrypt = require('bcrypt');
-const { User, Post, Comment } = require('../../models');
+const { User, Post } = require('../../models');
 
 // need
 // login?
@@ -14,19 +13,13 @@ const { User, Post, Comment } = require('../../models');
 // get all users
 router.get('/', async (req, res) => {
     try {
-        const userData = await User.findAll({
-            include: [
-                {
-                    model: Post,
-                    model: Comment,
-                }
-            ]
-        });
+        const userData = await User.findAll();
         res.status(200).json(userData);
     } catch (err) {
+        console.error(err);
         res.status(500).json(err);
     }
-})
+});
 
 // get user by id
 router.get('/:id', async (req, res) => {
@@ -40,11 +33,11 @@ router.get('/:id', async (req, res) => {
                         'date'
                     ]
                 },
-                {
-                    model: Comment, attributes: [
-                        'title'
-                    ]
-                },
+                // {
+                //     model: Comment, attributes: [
+                //         'title'
+                //     ]
+                // },
             ],
         }
         );
@@ -67,9 +60,10 @@ router.post('/', async (req, res) => {
             username: req.body.username,
             password: req.body.password,
         });
-
         req.session.save(() => {
             req.session.loggedIn = true;
+            req.session.username = userData.username;
+            req.session.user_id = userData.id;
 
             res.status(200).json(userData);
         });
@@ -81,6 +75,7 @@ router.post('/', async (req, res) => {
 
 // user login
 router.post('/login', async (req, res) => {
+    
     try {
         const userData = await User.findOne({
             where: {
@@ -93,7 +88,7 @@ router.post('/login', async (req, res) => {
             return;
         }
 
-        const validPassword = await bcrypt.compare(req.body.password, userData.password);
+        const validPassword = userData.checkPassword(req.body.password);
 
         if (!validPassword) {
             res.status(400).json({ message: 'Incorrect username or password.' });
@@ -102,6 +97,7 @@ router.post('/login', async (req, res) => {
 
         req.session.save(() => {
             req.session.user_id = userData.id;
+            req.session.creator = userData.username
             req.session.loggedIn = true;
 
             res.status(200).json({ user: userData, message: 'Login successful.' });
