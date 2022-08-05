@@ -19,11 +19,6 @@ Post.init(
           type: DataTypes.TEXT,
           allowNull: false,
         },
-        // date: {
-        //   type: Sequelize.DATE,
-        //   allowNull: false,
-        //   defaultValue: Sequelize.NOW
-        // },
         user_id: {
           type: DataTypes.INTEGER,
           references: {
