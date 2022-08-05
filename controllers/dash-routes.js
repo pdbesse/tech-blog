@@ -50,6 +50,24 @@ router.post('/', withAuth, async (req, res) => {
     }
 });
 
+// get post by id
+router.get('/:id', withAuth, async (req, res) => {
+    try {
+      const postData = await Post.findByPk(req.params.id, {
+        where: {
+          id: req.params.id,
+        }
+        });
+      // res.status(200).json(postData);
+      res.render('post-details', {
+        postData,
+        loggedIn: req.session.loggedIn
+      });
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
+
 // put post
 
 // delete post

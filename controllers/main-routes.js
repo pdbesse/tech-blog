@@ -28,6 +28,22 @@ router.get('/', async (req, res) => {
     }
 });
 
+// router.get('/api/posts/:id', withAuth, async (req, res) => {
+//     try {
+//       const postData = await Post.findByPk({
+//         where: {
+//           id: req.params.id,
+//         }
+//         });
+//       // res.status(200).json(postData);
+//       res.render('post-details', {
+//         postData,
+//         loggedIn: req.session.loggedIn
+//       });
+//     } catch (err) {
+//       res.status(500).json(err);
+//     }
+//   });
 
 // get login
 router.get('/login', (req, res) => {

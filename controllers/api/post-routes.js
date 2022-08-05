@@ -15,12 +15,33 @@ router.get('/', withAuth, async (req, res) => {
 // get post by id 
 router.get('/:id', withAuth, async (req, res) => {
   try {
+    console.log('test')
     const postData = await Post.findByPk(req.params.id, {
       where: {
-        id: req.params.id,
-      }
-      });
-    res.status(200).json(postData);
+        id: req.params.id
+      },
+      include: [
+        {
+          model: User,
+          attributes: [
+            'username',
+          ],
+          include: [
+            {
+              model: Comment,
+              attributes: [
+                'id', 'text', 'user_id', 'post_id', 'created_At'
+              ]
+            }
+          ]
+        }
+      ],
+    });
+    if (!postData) {
+      res.status(404).json({ message: 'No post found.' });
+      return;
+  }
+    res.status(200).json(postData)
   } catch (err) {
     res.status(500).json(err);
   }
@@ -30,9 +51,9 @@ router.get('/:id', withAuth, async (req, res) => {
 router.post('/', withAuth, async (req, res) => {
   try {
     const newPost = await Post.create({
-          title: req.body.title,
-          description: req.body.description,
-          user_id: req.session.user_id
+      title: req.body.title,
+      description: req.body.description,
+      user_id: req.session.user_id
     });
     // res.render
     res.status(200).json(newPost);
