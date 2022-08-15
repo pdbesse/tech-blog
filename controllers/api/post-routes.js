@@ -13,39 +13,39 @@ router.get('/', withAuth, async (req, res) => {
 });
 
 // get post by id 
-router.get('/:id', withAuth, async (req, res) => {
-  try {
-    console.log('test')
-    const postData = await Post.findByPk(req.params.id, {
-      where: {
-        id: req.params.id
-      },
-      include: [
-        {
-          model: User,
-          attributes: [
-            'username',
-          ],
-          include: [
-            {
-              model: Comment,
-              attributes: [
-                'id', 'text', 'user_id', 'post_id', 'created_At'
-              ]
-            }
-          ]
-        }
-      ],
-    });
-    if (!postData) {
-      res.status(404).json({ message: 'No post found.' });
-      return;
-  }
-    res.status(200).json(postData)
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+// router.get('/:id', withAuth, async (req, res) => {
+//   try {
+//     console.log('test')
+//     const postData = await Post.findByPk(req.params.id, {
+//       where: {
+//         id: req.params.id
+//       },
+//       include: [
+//         {
+//           model: User,
+//           attributes: [
+//             'username',
+//           ],
+//           include: [
+//             {
+//               model: Comment,
+//               attributes: [
+//                 'id', 'text', 'user_id', 'post_id', 'created_At'
+//               ]
+//             }
+//           ]
+//         }
+//       ],
+//     });
+//     if (!postData) {
+//       res.status(404).json({ message: 'No post found.' });
+//       return;
+//   }
+//     res.status(200).json(postData)
+//   } catch (err) {
+//     res.status(500).json(err);
+//   }
+// });
 
 // create new post
 router.post('/', withAuth, async (req, res) => {

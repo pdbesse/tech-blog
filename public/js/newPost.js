@@ -22,18 +22,6 @@ const newPostFormHandler = async (event) => {
     }
 };
 
-// const createButton = async () => {
-//      await fetch('/dashboard/new', {
-//         method: 'GET',
-//     });
-//         // document.location.replace('/dashboard/new')
-// };
-
 document
-    .querySelector('.new-post-form')
-    .addEventListener('submit', newPostFormHandler);
-
-// document
-//     .querySelector('#new')
-//     .addEventListener('click', createButton);
-
+    .querySelector('#new-submit')
+    .addEventListener('click', newPostFormHandler);

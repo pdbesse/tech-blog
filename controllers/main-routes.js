@@ -11,10 +11,10 @@ const withAuth = require('../utils/Auth');
 router.get('/', async (req, res) => {
     try {
         const postData = await Post.findAll({
-            include: 
-            [
-                {model: User},
-            ],
+            include:
+                [
+                    { model: User },
+                ],
         });
 
         const posts = postData.map((posts) => posts.get({ plain: true }));
@@ -28,22 +28,21 @@ router.get('/', async (req, res) => {
     }
 });
 
-// router.get('/api/posts/:id', withAuth, async (req, res) => {
-//     try {
-//       const postData = await Post.findByPk({
-//         where: {
-//           id: req.params.id,
-//         }
-//         });
-//       // res.status(200).json(postData);
-//       res.render('post-details', {
-//         postData,
-//         loggedIn: req.session.loggedIn
-//       });
-//     } catch (err) {
-//       res.status(500).json(err);
-//     }
-//   });
+router.get('/api/posts/:id', withAuth, async (req, res) => {
+    try {
+        const postData = await Post.findByPk(req.params.id, {
+            include: [
+                User,
+                Comment,
+            ]
+        });
+        const post = postData.get({ plain: true });
+        // console.log(post)
+        res.render('post', post);
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
 
 // get login
 router.get('/login', (req, res) => {

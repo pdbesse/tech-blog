@@ -1,0 +1,45 @@
+<section class="card">
+    <header>{{title}}</header>
+
+    <div class="card-body">
+        <p>{{description}}</p>
+        <p>Posted by: {{user.username}}</p>
+    </div>
+    {{!--
+    <script src="/js/logout.js"></script> --}}
+</section>
+
+{{#if comments}}
+<section class="card">
+    <div class="'card-header">
+        <header>Comments</header>
+    </div>
+
+    <div class="card-body">
+        {{#each comments}}
+        <div>
+            <p>
+                {{text}}
+            </p>
+            <p>
+                Posted by: {{user_id}}
+            </p>
+        </div>
+        {{/each}}
+    </div>
+</section>
+{{/if}}
+    <div class="card">
+        <h2 class="card-header">Add a comment</h2>
+        <form class="form new-post-form">
+            <div class="form-group">
+                <label for="comment-description">Text</label>
+                <input class="form-input" type="comment-description" id="comment-description" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary" id="new-comment" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+
+<script src="/js/newComment.js"

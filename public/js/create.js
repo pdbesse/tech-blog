@@ -2,7 +2,7 @@ const createButton = async () => {
     await fetch('/dashboard/new', {
        method: 'GET',
    });
-       // document.location.replace('/dashboard/new')
+       // document.location.replace('/dashboard/')
 };
 
 document
